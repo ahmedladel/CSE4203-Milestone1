@@ -1,0 +1,8 @@
+2026-08-12 19:42:52.014 EEST:	Info: Preparing projects for debugging...
+2026-08-12 19:42:52.018 EEST:	Info: Preparing projects for debugging completed
+2026-08-12 19:42:52.049 EEST:	Info: Provisioning solution...
+2026-08-12 19:42:52.052 EEST:	Info: Provisioning projects skipped: solution contains only the current project.
+2026-08-12 19:42:52.164 EEST:	Info: Provisioning resources
+2026-08-12 19:42:53.308 EEST:	Info: Provisioning solution completed
+2026-08-12 19:42:56.254 EEST:	Info: Execution status changed to Running
+2026-08-12 19:43:11.618 EEST:	Info: Execution status changed to Succeeded
