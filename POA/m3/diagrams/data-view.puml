@@ -1,0 +1,15 @@
+@startuml
+title SoloQ UASSS - Data View
+entity USER { *user_id : UUID <<PK>> -- email : varchar <<UNIQUE>> -- password_hash : varchar -- role : enum }
+entity DEPARTMENT { *department_id : UUID <<PK>> -- name : varchar -- description : text }
+entity STAFF_PROFILE { *user_id : UUID <<PK, FK>> -- department_id : UUID <<FK>> }
+entity APPOINTMENT_SLOT { *slot_id : UUID <<PK>> -- department_id : UUID <<FK>> -- start_at : timestamp -- end_at : timestamp }
+entity APPOINTMENT { *appointment_id : UUID <<PK>> -- slot_id : UUID <<FK>> -- student_id : UUID <<FK>> -- status : enum }
+entity EMAIL_LOG { *log_id : UUID <<PK>> -- appointment_id : UUID <<FK>> -- status : varchar }
+USER ||--o| STAFF_PROFILE
+DEPARTMENT ||--o{ STAFF_PROFILE
+DEPARTMENT ||--o{ APPOINTMENT_SLOT
+APPOINTMENT_SLOT ||--o| APPOINTMENT : one active booking
+USER ||--o{ APPOINTMENT : student
+APPOINTMENT ||--o{ EMAIL_LOG
+@enduml

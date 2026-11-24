@@ -1,0 +1,18 @@
+@startuml
+title SoloQ UASSS - Deployment View
+node "User Device" { artifact "Modern Browser" }
+node "Application Host" {
+  node "Docker Compose" {
+    artifact "Web Container\nReact build + Nginx"
+    artifact "API Container\nNode.js + Express"
+    database "PostgreSQL Container" as DB
+    folder "Persistent Database Volume" as Volume
+  }
+}
+cloud "External SMTP Provider"
+"Modern Browser" --> "Web Container" : HTTPS
+"Web Container" --> "API Container" : HTTPS / JSON
+"API Container" --> DB : SQL
+DB --> Volume : persistent storage
+"API Container" --> "External SMTP Provider" : SMTP / TLS
+@enduml

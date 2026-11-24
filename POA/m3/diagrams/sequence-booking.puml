@@ -1,0 +1,20 @@
+@startuml
+title Booking and Email Confirmation
+actor Student
+participant "API Controller" as Controller
+participant "Booking Service" as Service
+database PostgreSQL
+participant "Notification Adapter" as Notify
+Student -> Controller : POST /appointments
+Controller -> Service : validate and request booking
+Service -> PostgreSQL : BEGIN; insert appointment
+PostgreSQL --> Service : commit + appointment ID
+Service -> Notify : send confirmation
+Notify --> Service : sent / failed
+Service --> Controller : booking result
+Controller --> Student : 201 Created
+note over Service,PostgreSQL
+Booking commits before email delivery.
+Email failure does not cancel the appointment.
+end note
+@enduml

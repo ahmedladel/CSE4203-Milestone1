@@ -1,0 +1,19 @@
+@startuml
+title Concurrent Booking Attempts for One Slot
+actor "Student A" as A
+actor "Student B" as B
+participant "Booking API" as API
+database PostgreSQL as DB
+A -> API : Request slot S
+B -> API : Request slot S
+API -> DB : Transaction A: INSERT
+API -> DB : Transaction B: INSERT
+DB --> API : A commits
+DB --> API : B rejected by unique constraint
+API --> A : 201 Created
+API --> B : 409 SLOT_ALREADY_BOOKED
+note over DB
+A partial unique index allows only one active
+booking for each slot.
+end note
+@enduml

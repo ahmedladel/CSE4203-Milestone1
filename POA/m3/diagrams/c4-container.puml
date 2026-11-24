@@ -1,0 +1,15 @@
+@startuml
+title SoloQ UASSS - C4 Level 2 Container View
+left to right direction
+actor "Student / Department Staff / Administrator" as Users
+rectangle "UASSS" {
+  rectangle "Web UI\nReact + Nginx" as Web
+  rectangle "Backend API\nNode.js + Express\nREST / JSON" as API
+  database "PostgreSQL\nUsers, slots, appointments" as DB
+}
+cloud "External Email Notification Service\nSMTP" as Mail
+Users --> Web : HTTPS
+Web --> API : HTTPS / JSON
+API --> DB : SQL over TCP
+API --> Mail : SMTP over TLS
+@enduml

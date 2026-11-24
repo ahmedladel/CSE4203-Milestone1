@@ -1,0 +1,25 @@
+@startuml
+title SoloQ UASSS - Backend API Component View
+left to right direction
+rectangle "Express Backend API" {
+  component "HTTP Routes" as Routes
+  component "Authentication / RBAC Middleware" as Auth
+  component "Controllers" as Ctrl
+  component "Application Services\n(Booking, Schedule, User, Department)" as Svc
+  component "Domain Rules" as Domain
+  component "Repository Layer" as Repo
+  component "Notification Adapter" as Notify
+  component "Central Error Handler" as Errors
+}
+database "PostgreSQL" as DB
+cloud "SMTP Provider" as SMTP
+Routes --> Auth
+Auth --> Ctrl
+Ctrl --> Svc
+Svc --> Domain
+Svc --> Repo
+Repo --> DB
+Svc --> Notify
+Notify --> SMTP
+Ctrl --> Errors : errors passed to
+@enduml
