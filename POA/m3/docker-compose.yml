@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: soloq
+      POSTGRES_USER: soloq
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-soloq_dev_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soloq -d soloq"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  api:
+    build: ./api
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgres://soloq:${DB_PASSWORD:-soloq_dev_password}@db:5432/soloq
+      JWT_SECRET: ${JWT_SECRET:-local-demo-secret-change-me}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-noreply@soloq.local}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports: ["4000:4000"]
+  web:
+    build: ./web
+    depends_on: [api]
+    ports: ["8080:80"]
+volumes:
+  postgres_data:
